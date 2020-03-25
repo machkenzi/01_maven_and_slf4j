@@ -14,8 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,16 +60,13 @@ public class MessageLoggerTests {
         //GIVEN
         String message = null;
 
+        //WHEN
         MessageLogger underTest = new MessageLogger();
 
-        //WHEN
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            underTest.LogToStringToConsole(null);
-        });
-
         //THEN
-        assertThat(exception).isNotNull();
-        assertThat(exception).isInstanceOf(NullPointerException.class);
-        assertThat(exception.getMessage()).isEqualTo("string must not be null");
+        assertThatThrownBy(() -> {
+            underTest.LogToStringToConsole(null);
+        }).isInstanceOf(NullPointerException.class)
+                .hasMessage("string must not be null");
     }
 }
