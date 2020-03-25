@@ -1,6 +1,7 @@
 package logger;
 
 import ch.qos.logback.classic.Level;
+import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,11 +63,12 @@ public class MessageLoggerTests {
 
         //WHEN
         MessageLogger underTest = new MessageLogger();
+        final ThrowableAssert.ThrowingCallable statement = () -> {
+            underTest.LogToStringToConsole(null);
+        };
 
         //THEN
-        assertThatThrownBy(() -> {
-            underTest.LogToStringToConsole(null);
-        }).isInstanceOf(NullPointerException.class)
+        assertThatThrownBy(statement).isInstanceOf(NullPointerException.class)
                 .hasMessage("string must not be null");
     }
 }
