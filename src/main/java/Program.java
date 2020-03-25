@@ -1,9 +1,8 @@
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import logger.MessageLogger;
 
 public class Program {
     public static void main(String args[]) {
-        final Logger logger = LoggerFactory.getLogger(Program.class);
-        logger.info("First Project Log");
+       var classThatLogs = new MessageLogger();
+       classThatLogs.LogToStringToConsole("Test");
     }
 }
