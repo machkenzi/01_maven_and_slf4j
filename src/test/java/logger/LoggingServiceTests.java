@@ -1,6 +1,5 @@
 package logger;
 
-import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,29 +22,13 @@ public class LoggingServiceTests {
     }
 
     @Test
-    public void ShouldWriteMessage() {
+    public void ShouldWriteLog() {
         //GIVEN
-        String message = "Test";
 
         //WHEN
-        underTest.LogMessage(message);
+        underTest.start();
 
         //THEN
-        verify(logger).info(message);
-    }
-
-    @Test
-    public void ShouldThrowException() {
-        //GIVEN
-        String message = null;
-
-        //WHEN
-        final ThrowableAssert.ThrowingCallable statement = () -> {
-            underTest.LogMessage(null);
-        };
-
-        //THEN
-        assertThatThrownBy(statement).isInstanceOf(NullPointerException.class)
-                .hasMessage("string must not be null");
+        verify(logger).info("Logger service started");
     }
 }
