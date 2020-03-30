@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
 import java.time.Instant;
+import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -39,10 +40,7 @@ public class LoggingServiceTests {
     @Test
     public void ShouldLogMessage() {
         // GIVEN
-        Message message = Message.builder()
-                .value("Test")
-                .timestamp(Instant.ofEpochSecond(1585506000))
-                .build();
+        Message message = new Message("Test", Instant.parse("2020-03-29T20:20:00Z"));
 
         //WHEN
         underTest.LogMessage(message);
@@ -51,54 +49,4 @@ public class LoggingServiceTests {
         verify(logger).info("Sent message \"Test\" at 29.03.2020 20:20:00");
     }
 
-    @Test
-    public void ShouldFailBecauseMessageNotProvided() {
-        //GIVEN
-        Message message = null;
-
-        //WHEN
-        final ThrowableAssert.ThrowingCallable statement = () -> {
-            underTest.LogMessage(message);
-        };
-
-        //THEN
-        assertThatThrownBy(statement).isInstanceOf(NullPointerException.class)
-                .hasMessage("message must not be null");
-    }
-
-    @Test
-    public void ShouldFailBecauseValueNotProvided() {
-        //GIVEN
-        Message message = Message.builder()
-                .value(null)
-                .timestamp(Instant.ofEpochSecond(1585506000))
-                .build();
-
-        //WHEN
-        final ThrowableAssert.ThrowingCallable statement = () -> {
-            underTest.LogMessage(message);
-        };
-
-        //THEN
-        assertThatThrownBy(statement).isInstanceOf(NullPointerException.class)
-                .hasMessage("value must not be null");
-    }
-
-    @Test
-    public void ShouldFailBecauseTimestampNotProvided() {
-        //GIVEN
-        Message message = Message.builder()
-                .value("Test")
-                .timestamp(null)
-                .build();
-
-        //WHEN
-        final ThrowableAssert.ThrowingCallable statement = () -> {
-            underTest.LogMessage(message);
-        };
-
-        //THEN
-        assertThatThrownBy(statement).isInstanceOf(NullPointerException.class)
-                .hasMessage("timestamp must not be null");
-    }
 }
